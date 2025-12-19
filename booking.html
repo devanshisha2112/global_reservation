@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Booking | Global Reservation System</title>
+  <style>
+    body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f9f9f9;color:#333}
+    header{background:#1a1a1a;color:#fff;padding:15px;text-align:center}
+    nav a{color:#fff;margin:0 15px;text-decoration:none;font-size:16px}
+    .container{max-width:800px;margin:40px auto;padding:20px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+    h2{text-align:center;margin-bottom:20px;color:#1a1a1a}
+    form{display:grid;gap:15px}
+    label{font-weight:bold}
+    input,select{width:100%;padding:10px;font-size:16px;border:1px solid #ccc;border-radius:6px}
+    button{background:#1a1a1a;color:#fff;padding:12px;font-size:16px;border:none;border-radius:6px;cursor:pointer;transition:0.3s}
+    button:hover{background:#333}
+    footer{background:#1a1a1a;color:#fff;text-align:center;padding:15px 0;margin-top:30px}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Global Reservation System</h1>
+    <nav>
+      <a href="mainpage.php">Home</a>
+      <a href="about_us.html">About Us</a>
+      <a href="service.html">Services</a>
+      <a href="flights.html">Flights</a>
+      <a href="contact_us.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Confirm Your Booking</h2>
+    <form action="api/booking.php" method="POST">
+      <input type="hidden" name="service" id="service">
+      <input type="hidden" name="service_id" id="service_id">
+
+      <label>Full Name</label>
+      <input type="text" name="full_name" required>
+
+      <label>Email</label>
+      <input type="email" name="email" required>
+
+      <label>Phone</label>
+      <input type="text" name="phone" required>
+
+      <label>Passengers</label>
+      <select name="passengers">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+
+      <label>Class</label>
+      <select name="class">
+        <option value="">--Select (if applicable)--</option>
+        <option value="economy">Economy</option>
+        <option value="business">Business</option>
+        <option value="first">First Class</option>
+        <option value="sleeper">Sleeper</option>
+        <option value="ac">AC</option>
+        <option value="non-ac">Non-AC</option>
+      </select>
+
+      <button type="submit">Proceed to Payment</button>
+    </form>
+  </div>
+
+  <footer>
+    <div>
+      <a href="mainpage.php">Home</a> |
+      <a href="about_us.html">About Us</a> |
+      <a href="contact_us.html">Contact</a> |
+      <a href="service.html">Services</a>
+    </div>
+    <p>&copy; 2025 Global Reservation System. All rights reserved.</p>
+  </footer>
+
+<script>
+  // fill hidden inputs from query params
+  const params = new URLSearchParams(window.location.search);
+  document.getElementById('service').value = params.get('service') || '';
+  document.getElementById('service_id').value = params.get('id') || params.get('service_id') || '';
+</script>
+</body>
+</html>

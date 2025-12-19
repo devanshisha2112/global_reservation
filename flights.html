@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="UTF-8">
+
+  <meta charset="utf-8" />
+  <title>Flights | Global Reservation System</title>
+  <style>
+    
+    body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f9f9f9;color:#333}
+    header{background:#1a1a1a;color:#fff;padding:15px;text-align:center}
+    header h1{margin:0}
+    nav a{color:#fff;margin:0 15px;text-decoration:none;font-size:16px}
+    .container{max-width:800px;margin:40px auto;padding:20px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
+    h2{text-align:center;margin-bottom:20px;color:#1a1a1a}
+    form{display:grid;gap:15px}
+    label{font-weight:bold;margin-bottom:5px;display:block}
+    input,select{width:100%;padding:10px;font-size:16px;border:1px solid #ccc;border-radius:6px}
+    button{background:#1a1a1a;color:#fff;padding:12px;font-size:16px;border:none;border-radius:6px;cursor:pointer;transition:0.3s}
+    button:hover{background:#333}
+    footer{background:#1a1a1a;color:#fff;text-align:center;padding:15px 0;margin-top:30px}
+    table{width:100%;border-collapse:collapse;margin-top:15px}
+    table th, table td{border:1px solid #ddd;padding:8px;text-align:left}
+    .info{margin-top:10px;padding:10px;border-radius:6px;background:#f0f0f0}
+    .error{color:#c00}
+    #swap-btn:hover {
+  background: #333;
+  transform: rotate(180deg);
+  transition: transform 0.3s ease;
+}
+
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Global Reservation System</h1>
+    <nav>
+      <a href="http://localhost/global_reservation/mainpage.php">Home</a>
+      <a href="about_us.html">About Us</a>
+      <a href="service.html">Services</a>
+      <a href="flights.html">Flights</a>
+      <a href="contact_us.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Book Your Flight</h2>
+
+    <!-- NOTE: input names are 'from', 'to', 'date' to match PHP -->
+    <form id="flight-search" onsubmit="return false;">
+      <div>
+        <label for="from">From</label>
+        <input type="text" id="from" name="from" placeholder="Enter Departure City (e.g. Delhi)" required>
+      </div>
+      <!-- 🔁 Swap Button (separate row) -->
+<div style="text-align: center; margin: 10px 0;">
+  <button type="button" id="swap-btn" 
+          style="background: #1a1a1a; color: white; border: none; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; font-size: 20px;">
+    ⇅
+  </button>
+</div>
+      <div>
+        <label for="to">To</label>
+        <input type="text" id="to" name="to" placeholder="Enter Destination City (e.g. Mumbai)" required>
+      </div>
+      <div>
+        <label for="date">Departure Date</label>
+        <input type="date" id="date" name="date" required>
+      </div>
+      <div>
+        <label for="passengers">Passengers</label>
+        <select id="passengers" name="passengers" required>
+          <option value="1">1 Adult</option>
+          <option value="2">2 Adults</option>
+          <option value="3">3 Adults</option>
+          <option value="4">4 Adults</option>
+        </select>
+      </div>
+      <div>
+        <label for="class">Class</label>
+        <select id="class" name="class" required>
+          <option value="economy">Economy</option>
+          <option value="business">Business</option>
+          <option value="first">First Class</option>
+        </select>
+      </div>
+      <button id="search-btn" type="button">Search Flights</button>
+    </form>
+
+    <div id="flight-results" class="info" style="display:none;"></div>
+  </div>
+
+  <footer>
+    <div>
+      <a href="http://localhost/global_reservation/mainpage.php">Home</a> |
+      <a href="about_us.html">About Us</a> |
+      <a href="contact_us.html">Contact</a> |
+      <a href="service.html">Services</a>
+    </div>
+    <p>&copy; 2025 Global Reservation System. All rights reserved.</p>
+  </footer>
+
+<script>
+document.getElementById('search-btn').addEventListener('click', async () => {
+  const from = document.getElementById('from').value.trim();
+  const to   = document.getElementById('to').value.trim();
+  const date = document.getElementById('date').value;
+
+  const resultsDiv = document.getElementById('flight-results');
+  resultsDiv.style.display = 'block';
+  resultsDiv.innerHTML = 'Searching...';
+
+  // simple client-side validation
+  if (!from || !to || !date) {
+    resultsDiv.innerHTML = '<span class="error">Please fill From, To and Date.</span>';
+    return;
+  }
+
+  try {
+    // Use absolute path to avoid path mistakes.
+    const res = await fetch('http://localhost/global_reservation/api/search_flight.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ from, to, date })
+    });
+
+    // show HTTP status if not OK
+    if (!res.ok) {
+      const txt = await res.text();
+      resultsDiv.innerHTML = `<span class="error">Server error: ${res.status}. Response: ${txt}</span>`;
+      console.error('Server response:', res.status, txt);
+      return;
+    }
+
+    const data = await res.json();
+
+    if (data.error) {
+      resultsDiv.innerHTML = `<span class="error">Error: ${data.error}</span>`;
+      return;
+    }
+
+    const flights = data.flights || [];
+    if (flights.length === 0) {
+      resultsDiv.innerHTML = 'No flights found for your search.';
+      return;
+    }
+
+    // build table
+    // build table with Book Now
+let html = '<table><tr><th>Airline</th><th>From</th><th>To</th><th>Date</th><th>Dep</th><th>Arr</th><th>Price</th><th>Action</th></tr>';
+flights.forEach(f => {
+  html += `<tr>
+    <td>${escapeHtml(f.flight_name||'')}</td>
+    <td>${escapeHtml(f.source||'')}</td>
+    <td>${escapeHtml(f.destination||'')}</td>
+    <td>${escapeHtml(f.flight_date||'')}</td>
+    <td>${escapeHtml(f.departure_time||'')}</td>
+    <td>${escapeHtml(f.arrival_time||'')}</td>
+    <td>${escapeHtml(f.price||'')}</td>
+    <td><button onclick="bookNow('flight', ${f.id})">Book Now</button></td>
+  </tr>`;
+});
+html += '</table>';
+resultsDiv.innerHTML = html;
+
+  } catch (err) {
+    resultsDiv.innerHTML = '<span class="error">Network or server error. Open browser console for details.</span>';
+    console.error('Fetch error:', err);
+  }
+});
+
+// small helper to avoid XSS in demo
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"'`]/g, s => {
+    return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','`':'&#96;'})[s];
+  });
+}
+
+function bookNow(service, id) {
+  // ensure user is logged-in before booking: we rely on server-side check too
+  window.location.href = `booking.html?service=${encodeURIComponent(service)}&id=${encodeURIComponent(id)}`;
+}
+
+// 🔁 Swap "From" and "To" fields
+document.getElementById('swap-btn').addEventListener('click', () => {
+  const fromInput = document.getElementById('from');
+  const toInput = document.getElementById('to');
+  const temp = fromInput.value;
+  fromInput.value = toInput.value;
+  toInput.value = temp;
+});
+
+
+</script>
+
+</body>
+</html>

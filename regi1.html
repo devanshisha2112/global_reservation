@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="UTF-8">
+
+  <title>User Registration</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #2e65c2, black);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      width: 370px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+    h2 {
+      color: black;
+      margin-bottom: 25px;
+    }
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      font-size: 15px;
+    }
+    input:focus {
+      border-color: black;
+    }
+    button {
+      width: 95%;
+      padding: 12px;
+      background:  black;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: black;
+    }
+    p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    a {
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <h2>Registration Form</h2>
+
+  <!-- ✅ Added form tag -->
+  <form action="api/register.php" method="POST">
+    <input type="text" name="fullname" placeholder="Full Name" required>
+    <input type="email" name="email" placeholder="Email" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <input type="text" name="phone" placeholder="Phone Number">
+
+    <button type="submit">Register</button>
+  </form>
+</div>
+
+  <script>
+    const phone = document.getElementById("phone");
+
+    // Allow only digits and limit to 10 numbers
+    phone.addEventListener("input", () => {
+      phone.value = phone.value.replace(/[^0-9]/g, "");
+      if (phone.value.length > 10) phone.value = phone.value.slice(0, 10);
+    });
+
+    function register() {
+      const username = document.getElementById('username').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phoneVal = phone.value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!username || !email || !phoneVal || !password) {
+        alert("All fields are required!");
+        return;
+      }
+
+      const emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+      if (!email.match(emailPattern)) {
+        alert("Enter a valid email address!");
+        return;
+      }
+
+      if (phoneVal.length !== 10) {
+        alert("Phone number must be 10 digits!");
+        return;
+      }
+
+      // Save to localStorage for login verification
+      localStorage.setItem("username", username);
+      localStorage.setItem("email", email);
+      localStorage.setItem("phone", phoneVal);
+      localStorage.setItem("password", password);
+
+      alert("✅ Registration successful! Please login now.");
+      window.location.href = "login1.html";
+    }
+  </script>
+</body>
+</html>

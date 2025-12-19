@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart LMS</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0f2027;
+    background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    min-height:100vh;
+}
+
+/* Navbar */
+nav{
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    backdrop-filter:blur(10px);
+}
+
+nav h2{
+    font-weight:700;
+}
+
+nav button{
+    padding:8px 15px;
+    border:none;
+    border-radius:20px;
+    background:#00ffd5;
+    color:#000;
+    font-weight:bold;
+}
+
+/* Hero */
+.hero{
+    padding:50px 20px;
+    text-align:center;
+}
+
+.hero h1{
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+.hero p{
+    opacity:.9;
+}
+
+/* Search */
+.search{
+    margin:20px;
+}
+
+.search input{
+    width:100%;
+    padding:15px;
+    border-radius:30px;
+    border:none;
+    outline:none;
+    font-size:16px;
+}
+
+/* Courses */
+.courses{
+    padding:20px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+    gap:15px;
+}
+
+.course{
+    background:rgba(255,255,255,0.1);
+    backdrop-filter:blur(10px);
+    border-radius:20px;
+    padding:20px;
+    transition:.3s;
+}
+
+.course:hover{
+    transform:scale(1.05);
+    background:rgba(255,255,255,0.2);
+}
+
+.course h3{
+    margin-bottom:8px;
+}
+
+.course span{
+    font-size:13px;
+    opacity:.8;
+}
+
+/* Bottom Nav */
+.bottom{
+    position:fixed;
+    bottom:0;
+    width:100%;
+    background:rgba(0,0,0,0.4);
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0;
+    backdrop-filter:blur(10px);
+}
+
+.bottom div{
+    text-align:center;
+    font-size:12px;
+    opacity:.8;
+}
+
+.bottom div.active{
+    opacity:1;
+    color:#00ffd5;
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h2>SmartLMS</h2>
+    <button>Login</button>
+</nav>
+
+<section class="hero">
+    <h1>Learn Smarter 📚</h1>
+    <p>Premium Online Learning Experience</p>
+</section>
+
+<div class="search">
+    <input type="text" placeholder="Search courses...">
+</div>
+
+<section class="courses">
+    <div class="course">
+        <h3>Web Design</h3>
+        <span>HTML • CSS • UI</span>
+    </div>
+
+    <div class="course">
+        <h3>JavaScript</h3>
+        <span>Frontend Logic</span>
+    </div>
+
+    <div class="course">
+        <h3>PHP Backend</h3>
+        <span>Server Side</span>
+    </div>
+
+    <div class="course">
+        <h3>Python</h3>
+        <span>Programming</span>
+    </div>
+
+    <div class="course">
+        <h3>App UI</h3>
+        <span>Modern Design</span>
+    </div>
+
+    <div class="course">
+        <h3>AI Basics</h3>
+        <span>Future Tech</span>
+    </div>
+</section>
+
+<div class="bottom">
+    <div class="active">🏠<br>Home</div>
+    <div>📚<br>Courses</div>
+    <div>❤️<br>Saved</div>
+    <div>👤<br>Profile</div>
+</div>
+
+</body>
+</html>

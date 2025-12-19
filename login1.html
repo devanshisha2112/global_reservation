@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <meta charset="UTF-8">
+
+  <title>User Login</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #2e65c2, black);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      width: 370px;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.25);
+      text-align: center;
+    }
+    h2 {
+      color: black;
+      margin-bottom: 25px;
+    }
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+      font-size: 15px;
+    }
+    input:focus {
+      border-color: black;
+    }
+    button {
+      width: 95%;
+      padding: 12px;
+      background: black;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: black;
+    }
+    p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    a {
+      color: black;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+  <h2>Login Form</h2>
+  <form action="api/login.php" method="POST">
+  <label>Email</label>
+  <input type="email" name="email" required>
+
+  <label>Password</label>
+  <input type="password" name="password" required>
+
+  <button type="submit">Login</button>
+</form>
+  </div>
+
+
+  <script>
+    // Disable paste for passwords
+    document.getElementById("password").onpaste = e => e.preventDefault();
+
+    function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+
+      const storedUser = localStorage.getItem("username");
+      const storedPass = localStorage.getItem("password");
+
+      if (!username || !password) {
+        alert("All fields are required!");
+        return;
+      }
+
+      if (username === storedUser && password === storedPass) {
+        alert("Login successful!");
+        window.location.href = "mainpage.html"; 
+      } else {
+        alert("Login failed! Incorrect username or password.");
+      }
+    }
+  </script>
+</body>
+</html>
